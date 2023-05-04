@@ -85,11 +85,11 @@ describe("ensureAdmin", function () {
   test("works", function () {
     expect.assertions(1);
     const req = {};
-    const res = { locals: { user: { username: "test", is_admin: true } } };
+    const res = { locals: { user: { username: "test", isAdmin: true } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
-    ensureLoggedIn(req, res, next);
+    ensureAdmin(req, res, next);
   });
 
   test("unauth if not admin", function () {
