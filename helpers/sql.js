@@ -7,7 +7,7 @@ const { BadRequestError } = require("../expressError");
  * 
  * @param {*} dataToUpdate {Object} {col1: val1, col2: val2, ...}
  * @param {*} jsToSql {Object} for different names used in database ie. {firstName: "first_name"}
- * @returns {Object} {setCols, values} ie. {setCols: '"first_name"=$1, last_name=$2', values: {Michael, Smith}}
+ * @returns {Object} {setCols, values} ie. {setCols: '"first_name"=$1, "last_name"=$2', values: {Michael, Smith}}
  */
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {
