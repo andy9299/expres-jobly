@@ -118,5 +118,21 @@ router.delete("/:username", ensureAdminOrMatchingUser, async function (req, res,
   }
 });
 
+/** POST /[username]/jobs/[id] { username, jobId }  => { applied: jobId}
+ *
+ * Adds username and jobId combination to applications table
+ *
+ * Authorization required: admin or matching user
+ **/
+
+router.post("/:username/jobs/:id", ensureAdminOrMatchingUser, async function (req, res, next) {
+  try {
+    const jobId = +req.params.id;
+    await User.apply(req.params.username, jobId);
+    return res.json({ applied: jobId });
+  } catch (err) {
+    return next(err);
+  }
+});
 
 module.exports = router;

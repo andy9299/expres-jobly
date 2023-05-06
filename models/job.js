@@ -99,7 +99,6 @@ class Job {
    */
 
   static async update(id, data) {
-    console.log(data);
     const { setCols, values } = sqlForPartialUpdate(data);
     const idVarIdx = "$" + (values.length + 1);
 
