@@ -5,9 +5,8 @@
     "default": {},
     "title": "Root Schema",
     "required": [
-        "title",
-        "salary"
     ],
+    "additionalProperties": false,
     "properties": {
         "title": {
             "type": "string",

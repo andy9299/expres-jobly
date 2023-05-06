@@ -36,7 +36,7 @@ describe("create", function () {
 
 /**find all */
 describe("find all", function () {
-  test("works", async function () {
+  test("works no filter", async function () {
     let jobs = await Job.findAll();
     expect(jobs).toEqual([
       {
@@ -48,7 +48,7 @@ describe("find all", function () {
       },
       {
         id: testJobIds[1],
-        title: "j2",
+        title: "j1b",
         salary: 2,
         equity: "0.2",
         companyHandle: "c1"
@@ -62,6 +62,73 @@ describe("find all", function () {
       },
     ]);
   });
+
+  test("works filter title", async function () {
+    let jobs = await Job.findAll({ title: 'j1' });
+    expect(jobs).toEqual([
+      {
+        id: testJobIds[0],
+        title: "j1",
+        salary: 1,
+        equity: "0.1",
+        companyHandle: "c1"
+      },
+      {
+        id: testJobIds[1],
+        title: "j1b",
+        salary: 2,
+        equity: "0.2",
+        companyHandle: "c1"
+      }
+    ]);
+  });
+
+  test("works filter salary", async function () {
+    let jobs = await Job.findAll({ minSalary: 3 });
+    expect(jobs).toEqual([
+      {
+        id: testJobIds[2],
+        title: "j3",
+        salary: 3,
+        equity: null,
+        companyHandle: "c3"
+      },
+    ]);
+  });
+
+  test("works filter hasEquity", async function () {
+    let jobs = await Job.findAll({ hasEquity: true });
+    expect(jobs).toEqual([
+      {
+        id: testJobIds[0],
+        title: "j1",
+        salary: 1,
+        equity: "0.1",
+        companyHandle: "c1"
+      },
+      {
+        id: testJobIds[1],
+        title: "j1b",
+        salary: 2,
+        equity: "0.2",
+        companyHandle: "c1"
+      }
+    ]);
+  });
+
+  test("works multi filter (salary + hasEquity)", async function () {
+    let jobs = await Job.findAll({ hasEquity: true, minSalary: 2 });
+    expect(jobs).toEqual([
+      {
+        id: testJobIds[1],
+        title: "j1b",
+        salary: 2,
+        equity: "0.2",
+        companyHandle: "c1"
+      }
+    ]);
+  });
+
 });
 
 /**get */

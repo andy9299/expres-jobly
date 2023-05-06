@@ -41,7 +41,26 @@ class Job {
     let query =
       `SELECT id, title, salary, equity, company_handle AS "companyHandle"
       FROM jobs`;
-    const jobsRes = await db.query(query);
+    // Building WHERE filters
+    let whereClause = [];
+    let valuesList = [];
+    if (filters.title) {
+      valuesList.push(`%${filters.title}%`);
+      whereClause.push(`title ILIKE $${valuesList.length}`);
+    }
+    if (filters.minSalary) {
+      valuesList.push(filters.minSalary);
+      whereClause.push(`salary >= $${valuesList.length}`);
+    }
+    if (filters.hasEquity == true) {
+      whereClause.push(`equity > 0`);
+    }
+
+    if (whereClause.length > 0) {
+      query += " WHERE " + whereClause.join(" AND ");
+    }
+
+    const jobsRes = await db.query(query, valuesList);
     return jobsRes.rows;
   }
 

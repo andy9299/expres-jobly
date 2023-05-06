@@ -9,6 +9,7 @@
         "salary",
         "companyHandle"
     ],
+    "additionalProperties": false,
     "properties": {
         "title": {
             "type": "string",

@@ -62,8 +62,8 @@ class Company {
     let whereClause = [];
     let valuesList = [];
     if (filters.name) {
-      valuesList.push(filters.name);
-      whereClause.push(`name = $${valuesList.length}`);
+      valuesList.push(`%${filters.name}%`);
+      whereClause.push(`name ILIKE $${valuesList.length}`);
     }
     if (filters.minEmployees) {
       valuesList.push(filters.minEmployees);
@@ -103,6 +103,16 @@ class Company {
     const company = companyRes.rows[0];
 
     if (!company) throw new NotFoundError(`No company: ${handle}`);
+
+    const jobsRes = await db.query(
+      `SELECT id, title, salary, equity
+           FROM jobs
+           WHERE company_handle = $1
+           ORDER BY id`,
+      [handle],
+    );
+
+    company.jobs = jobsRes.rows;
 
     return company;
   }

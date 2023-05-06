@@ -47,7 +47,10 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/", async function (req, res, next) {
   try {
-    const jobs = await Job.findAll();
+    let filters = req.query;
+    if (filters.minSalary) filters.minSalary = +filters.minSalary;
+    if (filters.hasEquity) filters.hasEquity = (filters.hasEquity.toLowerCase() == "true");
+    const jobs = await Job.findAll(filters);
     return res.json({ jobs });
   } catch (err) {
     return next(err);
